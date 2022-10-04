@@ -1,6 +1,8 @@
 import React, { useState } from "react"
 import logo from "./logo.svg"
 import "./App.css"
+import QuestionsComponent from "./components/QuestionsComponent"
+import ScoreComponent from "./components/ScoreComponent"
 
 const questions = [
   {
@@ -37,6 +39,8 @@ const questions = [
   }
 ]
 
+export type IQuestion = typeof questions
+
 function App() {
   const [score, setScore] = useState<number>(0)
   const [showScore, setShowScore] = useState<boolean>(false)
@@ -59,18 +63,15 @@ function App() {
     <div className="App">
       {showScore ? (
         <>
-          <h1>
-            Your score is {score} out of {questions.length}
-          </h1>
+          <ScoreComponent score={score} total={questions.length} />
         </>
       ) : (
         <>
-          <h1>{questions[currentQues].question}</h1>
-          {questions[currentQues].answers.map((ans) => (
-            <button key={ans.id} onClick={() => btnHandler(ans.isCorrect)}>
-              {ans.option}
-            </button>
-          ))}
+          <QuestionsComponent
+            questions={questions}
+            currentQues={currentQues}
+            btnHandler={btnHandler}
+          />
         </>
       )}
     </div>
